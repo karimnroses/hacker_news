@@ -7,8 +7,10 @@ function App() {
   return (
     <>
     <div >
-     
+     <main>
         <Artikles />
+    </main>
+        
       
     </div>
     </>
