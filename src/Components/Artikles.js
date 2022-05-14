@@ -1,54 +1,43 @@
 import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Form } from "react-bootstrap";
 
 function Artikles() {
   const [articles, setArticles] = useState("");
-  const [searchedWord, setSearchedWord] = useState("");
-  let inputValue = React.createRef();
- 
-  const handelClick = (e) => {
-    setSearchedWord(inputValue.current.value);
-    //console.log(searchedWord);
-  };
-  const handelChange = (e) => {
+  const [searchedWord, setSearchedWord] = useState([]);
+  //let inputValue = React.createRef();
+
+  const handelSubmit = (e) => {
+    setSearchedWord(e.target.firstChild.value);
     e.preventDefault();
-    setSearchedWord(inputValue.current.value);
-    //console.log(searchedWord);
-  }
-  let url = "https://hn.algolia.com/api/v1/search?query=" + searchedWord;
+    e.target.firstChild.value = "";
+    console.log(searchedWord);
+  };
+
+  let url = `https://hn.algolia.com/api/v1/search?query= ${searchedWord}`;
   useEffect(() => {
     axios
       .get(url)
       .then((response) => setArticles(response.data.hits))
       .catch((err) => console.log(err));
-  }, [searchedWord]);
+  }, [url]);
 
   return (
     <>
-      <div className="flex-container">
-        <form className="form">
-          <label htmlFor="header-search">
-          Search blog posts
-          </label>
-          <input
-            type="text"
-            id="header-search"
-            placeholder="Search blog posts"
-            name="search"
-            ref={inputValue}
-            value={searchedWord}
-            onChange={handelChange}
-          />
-          <button onClick={handelClick} type="submit">
-            Search
-          </button>
-        </form>
-      </div>
+      <form onSubmit={handelSubmit}>
+        <input
+          type="text"
+          placeholder="type a search term"
+        ></input>
+        <button type="submit" className="submitBtn">
+          submit
+        </button>
+      </form>
 
       <div className="main">
-        <h2>Results for: <span>{searchedWord}</span></h2>
+        <h3>
+          Results for: <span>{searchedWord}</span>
+        </h3>
         {/* Conditional Rendering mit ternary operator:
       Wenn "articles" truthy ist (also einen Wert hat)
       wollen wir das div mit den Inhalten aus der Response zeigen
@@ -61,13 +50,14 @@ function Artikles() {
                   <li>
                     <b>Autor:</b> {article.author}
                   </li>
-                  <a href={article.url} target="_blank" rel="Link">
+                  <a href={article.url} target="_blank" rel="noreferrer">
                     Read more
                   </a>
                 </div>
               </ul>
             ))
-          : "Loading....."}
+          : <h3>Loading...</h3>
+          }
       </div>
     </>
   );
