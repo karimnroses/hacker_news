@@ -112,3 +112,13 @@ padding: 0.1em 0;
     font-size: large;
     font-weight: bold;
   }
+
+.page-item{
+  display: inline-block;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.pagination{
+  text-align: center !important;
+}

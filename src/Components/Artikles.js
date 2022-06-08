@@ -1,11 +1,16 @@
 import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { ClipLoader } from "react-spinners";
+import Pagination from "./Pagination";
 
 function Artikles() {
   const [articles, setArticles] = useState("");
   const [searchedWord, setSearchedWord] = useState([]);
-  //let inputValue = React.createRef();
+  const [articlesPerPage] = useState(7); //defining how many articles per page we want
+  const [currentPage, setCurrentPage] = useState(1); //defining that we will start at page 1
+  const indexOfLastArticle = currentPage * articlesPerPage;
+  const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
 
   const handelSubmit = (e) => {
     setSearchedWord(e.target.firstChild.value);
@@ -14,7 +19,7 @@ function Artikles() {
     console.log(searchedWord);
   };
 
-  let url = `https://hn.algolia.com/api/v1/search?query= ${searchedWord}`;
+  let url = `https://hn.algolia.com/api/v1/search?query=${searchedWord}&hitsPerPage=80`;
   useEffect(() => {
     axios
       .get(url)
@@ -22,13 +27,14 @@ function Artikles() {
       .catch((err) => console.log(err));
   }, [url]);
 
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <>
       <form onSubmit={handelSubmit}>
-        <input
-          type="text"
-          placeholder="type a search term"
-        ></input>
+        <input type="text" placeholder="type a search term"></input>
         <button type="submit" className="submitBtn">
           submit
         </button>
@@ -42,8 +48,10 @@ function Artikles() {
       Wenn "articles" truthy ist (also einen Wert hat)
       wollen wir das div mit den Inhalten aus der Response zeigen
       andernfalls zeige den String "Loading" */}
-        {articles
-          ? articles.map((article) => (
+        {articles ? (
+          articles
+            .slice(indexOfFirstArticle, indexOfLastArticle)
+            .map((article) => (
               <ul>
                 <div key={article.objectID}>
                   <li>{article.title}</li>
@@ -56,8 +64,17 @@ function Artikles() {
                 </div>
               </ul>
             ))
-          : <h3>Loading...</h3>
-          }
+        ) : (
+          <ClipLoader color="purple" size={150} />
+        )}
+
+        {articles && (
+          <Pagination
+            articlesPerPage={articlesPerPage}
+            totalNumberOfArticles={articles.length}
+            paginate={paginate}
+          />
+        )}
       </div>
     </>
   );
