@@ -34,9 +34,9 @@ function Artikles() {
   return (
     <>
       <form onSubmit={handelSubmit}>
-        <input type="text" placeholder="type a search term"></input>
+        <input type="text" placeholder="Get news"></input>
         <button type="submit" className="submitBtn">
-          submit
+          Go!
         </button>
       </form>
 

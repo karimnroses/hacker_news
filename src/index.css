@@ -2,13 +2,15 @@ html{
   box-sizing: border-box;
 }
 body {
-  background: rgba(0, 0, 0, 20%);
+  background-image: url("/oldpaper.jpg");
+  opacity: 0.9;
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
   monospace;  
 }
 
 form{
   text-align: center;
+  margin-top: 5rem;
 
 }
 
@@ -50,7 +52,7 @@ a{
 }
 
 a:link {
-  background-color: #0080FF;
+  background-color: #B88548;
   color: white;
   padding: 5px 10px;
   text-align: center;
@@ -59,8 +61,7 @@ a:link {
 }
 
 a:hover {
-  text-decoration: underline;
-  background-color: #4CAF50;
+  background-color: #529F4A;
 }
 
  a:visited{
@@ -68,7 +69,7 @@ a:hover {
  }
 
  ul{
-   background: hsla(255, 100%, 100%, 0.9);
+   background: hsla(255, 100%, 100%, 0.3);
    padding: 1rem 2rem;
    margin-top: 1rem;
  }
